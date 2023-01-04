@@ -30,3 +30,12 @@
 *.exe
 *.out
 *.app
+
+# other
+example_linked_list_input.json
+single_linked_list_notes.txt
+code_gen
+.vscode
+/include
+*.c
+*.h
