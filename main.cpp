@@ -1,15 +1,31 @@
 #include <iostream>
+#include <any>
 #include "linked_list.hpp"
-#include "c_function_builder.hpp"
+#include "parse_json.hpp"
+// #include "c_function_builder.hpp"
 // #include "error.hpp"
 using namespace std;
 
 int main(int argc, char** argv) {
   if(argc < 2) return EXIT_FAILURE;
+
+  // string next;
+  // ifstream input_file("example_linked_list_input.json");
+  // while(!input_file.eof()){
+  //   cout << (char) input_file.get() << endl;
+  //   // input_file >> next;
+  //   // cout << next << endl;
+  // }
+
+  Parse_Json pj("example_linked_list_input.json");
+
+  // Tokenizer tokenizer;
+  // tokenizer.add_tokens("fish man");
+
+  Linked_List list("");
+  list.generate_node_struct();
+  list.add_cpp_headers();
   
-  // Linked_List list("");
-  // list.generate_node_struct();
-  // list.add_cpp_headers();
   // ofstream fishy;
   // fishy.open("fishy.c");
   ofstream out_file(argv[1]);

@@ -1,3 +1,6 @@
+#ifndef C_FUNCTION_BUILDER_H
+#define C_FUNCTION_BUILDER_H
+
 #include <iostream>
 #include <vector>
 #include <stack>
@@ -133,7 +136,7 @@ class Code_Block {
   
 };
 
-// TODO some error handling for variable names and types MAYBE
+// TODO some error handling for variable types MAYBE
 class Function_Block: public Code_Block{
   public:
     Function_Block(BLOCK_INIT_VARS, string block_start){
@@ -310,23 +313,15 @@ public:
   {
     // TODO deal with header declaration stuff
     TRY_THROW(this->getArgs(args...), )
-    //   this->getArgs(args...);
-    // }
-    // catch(const std::exception& e){
-    //   std::cerr << e.what() << endl;
-    // }
-
-    // this->getArgs(args...);
     this->name = name;
+    this->indent_level = 0;
     this->block_type = FUNCTION_BUILDER;
-    // this->out_file.open(out_file);
     this->return_type = ret;
     
     // gets arguments as list
     string args_list = "";
     for(auto const& arg : this->local_vars){
       args_list += arg.second + " " + arg.first + ", ";
-      // string arg_name
     }
 
     // removes extra comma and space
@@ -336,21 +331,16 @@ public:
     string block_start = this->return_type + " " + this->name + "(" + args_list + ")";
 
     TRY_THROW(ADD_CODE_BLOCK(Function_Block, BLOCK_INIT_VAR_INPUT, block_start),)
-
-    // auto function_block = make_shared<Function_Block>(BLOCK_INIT_VAR_INPUT, block_start);
-    // this->code_blocks.push(function_block);
-
-    // this->start_block(out_file, this->return_type + " " + this->name + "(" + args_list + ")");
-    // this->code_blocks.top()->indent_level++;
   };
-
-  // ~Function_Builder() {
-  //   this->out_file.close();
-  // }
 
   // gets name of function
   string get_name(){
     return this->name;
+  }
+
+  // adds a blank line
+  void add_blank_line(ofstream& out_file){
+    write_new_line(out_file);
   }
 
   // returns true if function is completed
@@ -359,6 +349,7 @@ public:
     else return false;
   }
 
+  // ends function, ending as many blocks as needed to do so
   void end_function(ofstream& out_file){
     while(this->indent_level > 0){
       this->end_block(out_file);
@@ -394,7 +385,7 @@ public:
     return true;
   }
 
-  // adds else if statement
+  // adds else if statement (must do prior to ending if or else if statement block)
   bool add_else_if_statement(ofstream &out_file, string condition){
     if(this->code_blocks.top()->get_block_type() == IF_STATEMENT_BLOCK || this->code_blocks.top()->get_block_type() == ELSE_IF_STATEMENT_BLOCK){
       this->end_block(out_file);
@@ -409,7 +400,7 @@ public:
     
   }
 
-  // adds else statement
+  // adds else statement (must do prior to ending if or else if statement block)
   bool add_else_statement(ofstream &out_file){
     if(this->code_blocks.top()->get_block_type() == IF_STATEMENT_BLOCK || this->code_blocks.top()->get_block_type() == ELSE_IF_STATEMENT_BLOCK){
       this->end_block(out_file);
@@ -437,8 +428,5 @@ public:
 
   // ends block of code
   void end_block(ofstream& out_file);
-
-  // // adds local variable and returns false if variable already exists
-  // bool _add_local_var_(string type, string var_name);
 };
-
+#endif

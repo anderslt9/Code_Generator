@@ -1,7 +1,12 @@
+#ifndef LINKED_LIST_H
+#define LINKEDLIST_H
+
+
 #include <iostream>
 #include <fstream>
 #include <map>
 #include <vector>
+#include "c_function_builder.hpp"
 using namespace std;
 
 class Linked_List {
@@ -12,6 +17,7 @@ private:
   string hpp_file_name;
   string defined_name;
   map<string, string> presets;
+
 
 public:
   Linked_List(string input_file);
@@ -31,3 +37,5 @@ public:
 
   void generate_list_free_function();
 };
+
+#endif
